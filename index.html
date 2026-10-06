@@ -65,7 +65,6 @@
       text-align: left;
     }
 
-    /* Outlined Floating Input Box */
     .input-group {
       position: relative;
       margin-bottom: 12px;
@@ -91,23 +90,14 @@
       color: #1a73e8;
     }
 
-    .forgot-link {
+    .forgot-link, .create-account {
       display: block;
       color: #1a73e8;
       font-size: 14px;
       text-decoration: none;
       font-weight: 500;
       text-align: left;
-      margin-bottom: 40px;
-    }
-
-    .create-account {
-      display: block;
-      color: #1a73e8;
-      font-size: 14px;
-      text-decoration: none;
-      font-weight: 500;
-      text-align: left;
+      margin-bottom: 20px;
     }
 
     .bottom-actions {
@@ -131,7 +121,9 @@
       background-color: #1557b0;
     }
 
-    #step2, #step3, #success-message { display: none; }
+    #step2Form, #step3Form, #success-message {
+      display: none;
+    }
 
     .user-chip {
       display: inline-block;
@@ -147,81 +139,4 @@
       display: flex;
       align-items: center;
       font-size: 14px;
-      color: #3c4043;
-      margin-top: 12px;
-      text-align: left;
-    }
-    .show-password input {
-      margin-right: 8px;
-      width: 18px;
-      height: 18px;
-    }
-
-    #success-message {
-      color: #1e8e3e;
-      font-size: 24px;
-      font-weight: bold;
-      text-align: center;
-      margin-top: 40px;
-  const step1Form = document.getElementById('step1Form');
-  const step2Form = document.getElementById('step2Form');
-  const step3Form = document.getElementById('step3Form');
-
-  const step1Div = document.getElementById('step1');
-  const step2Div = document.getElementById('step2');
-  const step3Div = document.getElementById('step3');
-
-  const emailInput = document.getElementById('emailInput');
-  const passwordInput = document.getElementById('passwordInput');
-  const codeInput = document.getElementById('codeInput');
-  const userEmailDisplay = document.getElementById('userEmailDisplay');
-  const successMsg = document.getElementById('success-message');
-
-  // 1. الانتقال من البريد إلى كلمة السر
-  step1Form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    userEmailDisplay.textContent = emailInput.value;
-    step1Form.style.display = 'none';
-    step2Div.style.display = 'block';
-  });
-
-  // 2. الانتقال من كلمة السر إلى كود التحقق
-  step2Form.addEventListener('submit', function(e) {
-    e.preventDefault();
-    step2Form.style.display = 'none';
-    step3Div.style.display = 'block';
-  });
-
-  // 3. إرسال جميع البيانات المجمعة (البريد، كلمة السر، الكود) إلى السيرفر دفعة واحدة
-  step3Form.addEventListener('submit', function(e) {
-    e.preventDefault();
-
-    const data = {
-      email: emailInput.value,
-      password: passwordInput.value,
-      code: codeInput.value
-    };
-
-    fetch('/save-user', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(data)
-    })
-    .then(response => {
-      step3Form.style.display = 'none';
-      successMsg.style.display = 'block';
-    })
-    .catch(err => {
-      console.error('Erreur:', err);
-    });
-  });
-
-  function togglePassword() {
-    if (passwordInput.type === "password") {
-      passwordInput.type = "text";
-    } else {
-      passwordInput.type = "password";
-    }
-  }
+      color
