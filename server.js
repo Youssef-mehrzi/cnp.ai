@@ -96,7 +96,6 @@ app.get('/userslist', (req, res) => {
 
   res.send(html);
 });
-const path = require('path');
 
 app.use(express.static(__dirname));
 
